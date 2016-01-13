@@ -1,0 +1,27 @@
+config system
+	option hostname	'PowerBrick-XGateway'
+	option zonename 'Pacific/Auckland'
+	option timezone	'NZST-12NZDT,M9.5.0,M4.1.0/3'
+	option hardware 'Zbtlink ZBT-WE826'
+	option model 'GW3G00'
+        option failed_login_lockout '3'
+        option failed_login_attempts '0'
+        option failed_login_timer_running '0'
+        option failed_login_timer_pid '-1'
+	option fwversion 'PBX-20151230-1-0-0'
+
+config timeserver 'ntp'
+        list server '0.openwrt.pool.ntp.org'
+        list server '1.openwrt.pool.ntp.org'
+        list server '2.openwrt.pool.ntp.org'
+        list server '3.openwrt.pool.ntp.org'
+        option enabled '1'
+        option enable_server '0'
+
+config led 'wlan_led'
+        option name 'WLAN'
+        option sysfs 'zbt-wa05:blue:air'
+        option trigger 'netdev'
+        option dev 'wlan0'
+        option mode 'link tx rx'
+

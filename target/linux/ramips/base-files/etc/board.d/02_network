@@ -122,8 +122,18 @@ ramips_setup_interfaces()
 	zbt-wa05)
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"
 		ucidef_add_switch "switch0" "1" "1"
-		ucidef_add_switch_vlan "switch0" "1" "1 2 3 4 6t"
-		ucidef_add_switch_vlan "switch0" "2" "0 6t"
+		ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 6t"
+		ucidef_add_switch_vlan "switch0" "2" "4 6t"
+		uci set network.wan6=interface
+		uci set network.wan6._orig_ifname='eth0.2'
+		uci set network.wan6._orig_bridge='false'
+		uci set network.wan6.proto='3g'
+		uci set network.wan6.service='umts'
+		uci set network.wan6.apn='direct.telecom.co.nz'
+		uci set network.wan6.device='/dev/ttyUSB0'
+		uci set network.wan6.dialnumber='*98#'
+		uci set network.wan6.ipv6='auto'
+		uci commit network
 		;;
 	awapn2403)
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"

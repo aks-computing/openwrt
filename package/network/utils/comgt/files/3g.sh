@@ -23,7 +23,7 @@ proto_3g_init_config() {
 proto_3g_setup() {
 	local interface="$1"
 	local chat
-
+	sleep 20s
 	json_get_var device device
 	json_get_var apn apn
 	json_get_var service service
@@ -88,7 +88,6 @@ proto_3g_setup() {
 
 		;;
 	esac
-
 	connect="${apn:+USE_APN=$apn }DIALNUMBER=$dialnumber /usr/sbin/chat -t5 -v -E -f $chat"
 	ppp_generic_setup "$interface" \
 		noaccomp \

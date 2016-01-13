@@ -1,0 +1,28 @@
+config csvipalarm
+        option enable '0'
+
+config system
+        option connectRetry '3'
+        option sendTimeout '10'
+        option sendRetry '3'
+        option primIP '210.55.17.241'
+        option primPort '12100'
+        option username 'user9988'
+        option password 'pass7766'
+        option accnum '99887766'
+        option rebootMsg 'REBOOT'
+        option pollMsg 'POLL'
+        option pollFailThreshold '3'
+        option pollInt '30'
+        option secIP '203.97.89.81'
+        option secPort '12100'
+
+config events
+        option eventLanStatus '1'
+        option eventWanStatus '1'
+        option eventLoginSuccess '1'
+        option eventLoginFail '1'
+        option eventLoginMaxFail '1'
+        option eventPollFail '1'
+        option event3gStatus '1'
+

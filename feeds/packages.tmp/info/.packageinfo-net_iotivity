@@ -1,0 +1,164 @@
+Source-Makefile: feeds/packages/net/iotivity/Makefile
+Package: iotivity
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread @!USE_UCLIBC +libpthread +librt +libuuid
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity C Library
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity is a framework for the Internet of Things based on the
+    Open Interconnect Consortium Specification.
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-cpp
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +libpthread +libstdcpp
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity C++ Library
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity is a framework for the Internet of Things based on the
+    Open Interconnect Consortium Specification.
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-things-manager-lib
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp +libstdcpp
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity things manager lib
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity things-manager lib
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-plugin-manager-lib
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp +libexpat +boost +boost-system
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity plugin manager lib
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity plugin manager lib
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-mqttclient
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp +iotivity-plugin-manager-lib +boost +boost-system
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity mqtt Client
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity mqtt Client
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-oic-middle
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity OIC Middle
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity OIC Middle
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-things-manager
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp +iotivity-things-manager-lib
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity things manager
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     IoTivity things manager
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+Package: iotivity-example-garage
+Version: 0.9.2-1
+Depends: +libc +SSP_SUPPORT:libssp +USE_GLIBC:librt +USE_GLIBC:libpthread iotivity +iotivity-cpp
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Build-Depends: +boost +libexpat
+Section: net
+Category: Network
+Title: IoTivity Garage example
+Maintainer: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+Source: iotivity-0.9.2.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE.md
+Type: ipkg
+Description:     An IoTivity example application
+https://www.iotivity.org
+Hauke Mehrtens <hauke.mehrtens@lantiq.com>
+@@
+
+

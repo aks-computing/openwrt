@@ -1,0 +1,125 @@
+#!/bin/sh
+
+help()
+{
+        cat <<EOF
+Syntax: csvipalarmservice [command]
+
+Available commands:
+        start           Starts reporting enabled events to server
+        stop            Stops reporting events to server
+        restart         Restarts reporting service
+        status          Show status of server, events & queue
+
+EOF
+}
+
+start()
+{
+	stop
+        enabled=$(uci -q get csvipalarm.@csvipalarm[0].enable)
+        if [ $? -eq 0 ]; then
+	        if [ $enabled -eq 1 ]; then
+	
+			/sbin/logread -f -r localhost 10000 & &> /dev/null
+			echo "$!" > /var/run/csvipalarm-logread.pid
+			# arg1=$(uci -q get csvipalarm.@system[0].primIP)
+			# if [ $? -eq 0 ]; then
+				# arg2=$(uci -q get csvipalarm.@system[0].primPort)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+
+				# arg2=$(uci -q get csvipalarm.@system[0].secIP)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].secPort)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].authPass)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].authAccNum)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].pollInterval)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].serverConnectRetry)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].eventSendRetry)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@system[0].eventSendTimeout)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].lanPort)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].wanConnection)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].3gConnection)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].loginSuccess)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].loginFailure)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].loginMaxFail)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+		
+				# arg2=$(uci -q get csvipalarm.@events[0].pollFailure)
+				# if [ $? -eq 0 ]; then  arg1="$arg1 $arg2" ; else  exit 1 ; fi
+	
+        		        echo $arg1
+		                /usr/bin/python /etc/csvipalarm.py $arg1 & &> /dev/null
+                		echo "$!" > /var/run/csvipalarm-queue.pid
+		
+			# else
+				# stop
+				# exit 1
+			# fi
+		fi
+	fi
+	
+}
+stop()
+{
+	if [ -e /var/run/csvipalarm-logread.pid ] ; then
+		kill -9 `cat /var/run/csvipalarm-logread.pid` &> /dev/null
+		rm /var/run/csvipalarm-logread.pid &> /dev/null
+	fi
+
+	if [ -e /var/run/csvipalarm-queue.pid ] ; then
+		kill -9 `cat /var/run/csvipalarm-queue.pid` &> /dev/null
+		rm /var/run/csvipalarm-queue.pid &> /dev/null
+	fi
+}
+restart() {
+	stop
+	start
+}
+
+status() {
+	
+	kill -USR1 `cat /var/run/csvipalarm-queue.pid` &> /dev/null
+	sleep 1s
+	cat /etc/csvipalarm_status
+
+}
+case "$1" in
+	stop|start|restart|status)
+		$*
+	;;
+	*)
+		help
+	;;
+esac
+
+exit 0
+

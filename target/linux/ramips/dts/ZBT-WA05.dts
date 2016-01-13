@@ -1,9 +1,9 @@
 /dts-v1/;
 
-/include/ "mt7620n.dtsi"
+/include/ "mt7620a.dtsi"
 
 / {
-	compatible = "zbtlink,zbt-wa05", "ralink,mt7620n-soc";
+	compatible = "zbtlink,zbt-wa05", "ralink,mt7620a-soc";
 	model = "Zbtlink ZBT-WA05";
 
 	chosen {
@@ -11,11 +11,11 @@
 	};
 
 	palmbus@10000000 {
-		gpio1: gpio@638 {
+		gpio0: gpio@600 {
 			status = "okay";
 		};
 
-		gpio2: gpio@660 {
+		gpio1: gpio@638 {
 			status = "okay";
 		};
 
@@ -26,10 +26,10 @@
 		spi@b00 {
 			status = "okay";
 
-			en25q64@0 {
+			en25q128@0 {
 				#address-cells = <1>;
 				#size-cells = <1>;
-				compatible = "w25q64";
+				compatible = "w25q128";
 				reg = <0 0>;
 				linux,modalias = "m25p80";
 				spi-max-frequency = <10000000>;
@@ -54,12 +54,15 @@
 
 				partition@50000 {
 					label = "firmware";
-					reg = <0x50000 0x760000>;
+					reg = <0x50000 0xfb0000>;
 				};
 			};
 		};
 	};
-
+	
+	sdhci@10130000 {
+	        status = "okay";
+	};
 	ehci@101c0000 {
 		status = "okay";
 	};
@@ -70,7 +73,7 @@
 
 	ethernet@10100000 {
 		mtd-mac-address = <&factory 0x4>;
-		ralink,port-map = "wllll";
+		ralink,port-map = "llllw";
 	};
 
 	wmac@10180000 {
@@ -91,7 +94,7 @@
 
 		power {
 			label = "zbt-wa05:blue:power";
-			gpios = <&gpio1 14 1>;
+			gpios = <&gpio1 14 0>;
 		};
 
 		usb {
@@ -116,5 +119,8 @@
 			gpios = <&gpio0 1 1>;
 			linux,code = <0x198>;
 		};
+	};
+	pcie@10140000 {
+	        status = "okay";
 	};
 };

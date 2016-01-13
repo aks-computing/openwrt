@@ -1,0 +1,91 @@
+#!/bin/bash
+FILE=files/etc/config/system
+PKG=""
+ORIGIMAGEFILE=bin/ramips/openwrt-ramips-mt7620-zbt-wa05-squashfs-sysupgrade.bin
+CURRENT_VER=$(grep "option fwversion" $FILE | awk -F"'" '{print $2}')
+NEW_VER=$CURRENT_VER
+MAKE_CMD="make V=s"
+help()
+{
+        cat <<EOF
+Syntax: pbxmake [options]
+
+Available options:
+        -p or --pkgversion  Sets the version of image, alphanumeric and/or dash "-"
+        -c or --clean       Removes contents of previous build 
+        -h or --help        Displays this messages
+
+Example:
+        pbxmake -p 1-1
+        pbxmake -p TEST99
+        pbxmake -c -p INCR100
+
+EOF
+}
+
+clean_up()
+{
+	echo "[Error] Build Failed or Interrupted"
+	if [[ $PKG != "" ]]; then
+		sed -i "s/\b$NEW_VER\b/$CURRENT_VER/" $FILE
+	fi
+	exit 1
+}
+
+while [[ $# > 0 ]]
+do
+	key="$1"
+
+	case $key in
+		-p|--pkgversion)
+		PKG="$2"
+		if ! [[ $PKG =~ ^([a-zA-Z0-9]+-?)+$ ]]; then
+			echo "[Error] Package version contains invalid characters or its starting with a dash \"-\""  >&2 # write to stderr
+			exit 1
+		fi
+		shift # past argument
+		;;
+		
+		-c|--clean)
+		CLEAN=YES
+		;;
+		
+		-h|--help)
+		help
+		exit 0
+		;;
+		
+		*)
+		echo "[Error] Unknown option passed:" $1		# unknown option
+		exit 1
+		;;
+	esac
+	shift # past argument or value
+done
+
+if [[ $PKG != "" ]]; then
+	NEW_VER="PBX-"$(date +%Y%m%d)"-"$PKG
+	sed -i "s/\b$CURRENT_VER\b/$NEW_VER/" $FILE
+	trap clean_up SIGHUP SIGINT SIGTERM
+fi
+echo "Building image with package version =" $(grep "option fwversion" $FILE | awk -F"'" '{print $2}')
+if [[ $CLEAN == YES ]]; then
+	echo "Cleaning contents of previous builds"
+	time $MAKE_CMD clean
+	if [[ $? -ne 0 ]]; then
+		clean_up
+	fi
+fi
+
+echo "Starting to build image"
+time $MAKE_CMD
+if [[ $? -ne 0 ]]; then
+	clean_up
+else
+	echo "Build Succeeded"
+	NEWIMAGEFILE=$(echo $ORIGIMAGEFILE | awk -F"." '{print $1}')-$NEW_VER".bin"
+	mv $ORIGIMAGEFILE $NEWIMAGEFILE
+	echo "Build Image is available at:" `pwd`/$NEWIMAGEFILE
+fi
+
+exit 0

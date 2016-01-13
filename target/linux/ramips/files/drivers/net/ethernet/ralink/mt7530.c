@@ -762,7 +762,7 @@ mt7530_probe(struct device *dev, void __iomem *base, struct mii_bus *bus, int vl
 	if (map)
 		mt7530_apply_mapping(mt7530, map);
 	mt7530_apply_config(swdev);
-
+	dev_info(dev, "MAK port-map %s",map->name);
 	/* magic vodoo */
 	if (!IS_ENABLED(CONFIG_SOC_MT7621) && bus && mt7530_r32(mt7530, REG_HWTRAP) !=  0x1117edf) {
 	        dev_info(dev, "fixing up MHWTRAP register - bootloader probably played with it\n");
